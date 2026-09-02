@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peixin - Terços e Adereços</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho Principal -->
+    <header>
+        <div class="header-container">
+            <div class="logo" onclick="irParaHome()">
+                <img src="sua-logo.png" alt="Peixin Logo">
+            </div>
+
+            <div class="busca-container" id="container-busca-principal">
+                <input type="text" id="campo-busca" placeholder="Buscar terços, adereços..." oninput="filtrarProdutos()">
+            </div>
+
+            <div class="carrinho-icone" onclick="abrirModalCarrinho()">
+                🛒 <span id="contador-carrinho">0</span>
+            </div>
+        </div>
+
+        <!-- Menu de Seções -->
+        <nav class="menu-secoes">
+            <button onclick="filtrarPorSecao('todos')">Todos</button>
+            <button onclick="filtrarPorSecao('terços')">Terços</button>
+            <button onclick="filtrarPorSecao('adereços')">Adereços</button>
+            <button onclick="filtrarPorSecao('personalizado')">Personalizados</button>
+            <button onclick="filtrarPorSecao('galeria')">Galeria (Inspirações)</button>
+        </nav>
+    </header>
+
+    <!-- TELA HOME -->
+    <main id="tela-home" class="container">
+        <!-- Carrossel de Destaques (Fade In / Fade Out) -->
+        <section id="carrossel-destaques" class="carrossel-container">
+            <!-- Gerado via JavaScript -->
+        </section>
+
+        <!-- Vitrine de Produtos -->
+        <h2 id="titulo-vitrine" class="titulo-sessao">Nossos Produtos</h2>
+        <div id="vitrine" class="produtos-grid">
+            <!-- Gerado via JavaScript -->
+        </div>
+    </main>
+
+    <!-- TELA DO PRODUTO (Estilo Mercado Livre) -->
+    <main id="tela-produto" class="container oculto">
+        <button class="btn-voltar" onclick="irParaHome()">← Voltar para a loja</button>
+
+        <div class="produto-detalhe-layout">
+            <!-- Bloco de Fotos (Esquerda) -->
+            <div class="produto-detalhe-fotos">
+                <div class="foto-principal-container">
+                    <img id="detalhe-foto-principal" src="" alt="Produto" loading="lazy">
+                </div>
+                <div id="detalhe-miniaturas" class="miniaturas-container">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <!-- Bloco de Informações (Direita) -->
+            <div class="produto-detalhe-info">
+                <h1 id="detalhe-nome">Nome do Produto</h1>
+                <p class="detalhe-preco">R$ <span id="detalhe-preco-valor">0,00</span></p>
+                <p id="detalhe-estoque-texto" style="margin-bottom: 15px; font-size: 14px;"></p>
+                <p id="detalhe-descricao" class="detalhe-descricao">Descrição do produto.</p>
+
+                <div class="opcao-cores">
+                    <h3>Escolha a Cor:</h3>
+                    <div id="detalhe-cores-container" class="cores-flex">
+                        <!-- Gerado via JS -->
+                    </div>
+                </div>
+
+                <button id="btn-adicionar-carrinho" class="btn-comprar" onclick="adicionarDoDetalheAoCarrinho()">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+
+        <!-- Seção de Semelhantes -->
+        <section class="produtos-semelhantes-container">
+            <h2 class="titulo-sessao">Quem viu este produto também comprou</h2>
+            <div id="produtos-semelhantes-grid" class="produtos-grid">
+                <!-- Gerado via JS -->
+            </div>
+        </section>
+
+        <!-- CONFIGURADOR INTERATIVO -->
+        <div id="tela-configurador" class="container oculto" style="margin-top: 20px;">
+            <button class="btn-voltar" onclick="irParaHome()">← Cancelar Customização</button>
+            <div class="configurador-layout" style="display: flex; flex-direction: column; gap: 20px; background: var(--fundo-card); padding: 20px; border-radius: 15px;">
+                
+                <!-- Imagem de Foco que vai trocar de lugar -->
+                <div class="configurador-imagem-foco" style="text-align: center;">
+                    <img id="img-foco-etapa" src="" alt="Foco Etapa" style="width: 100%; max-width: 400px; border-radius: 12px; border: 2px solid var(--primaria);">
+                    <p id="legenda-foco-etapa" style="margin-top: 10px; color: var(--secundaria); font-weight: bold;"></p>
+                </div>
+
+                <!-- Painel com os Cards de Opções -->
+                <div class="configurador-painel">
+                    <h2 id="titulo-etapa" style="font-size: 20px; margin-bottom: 15px;"></h2>
+                    <div id="opcoes-etapa-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;"></div>
+                    
+                    <div class="configurador-navegacao" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #272a3d;">
+                        <h3 style="color: var(--secundaria);">Preço: R$ <span id="preco-custom-total">0,00</span></h3>
+                        <button id="btn-avancar-etapa" class="btn-comprar" onclick="avancarConfigurador()" style="padding: 10px 20px; font-size: 16px;">Avançar Passo →</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DO CARRINHO (Flutuante Lateral) -->
+    <div id="modal-carrinho" class="modal-carrinho oculto">
+        <div class="modal-conteudo">
+            <span class="fechar-modal" onclick="fecharModalCarrinho()">&times;</span>
+            <h2>Seu Carrinho</h2>
+            
+            <!-- Lista onde entram APENAS os itens via JS -->
+            <div id="itens-carrinho" class="lista-itens-carrinho"></div>
+
+            <!-- Caixa de texto de observações externa à lista -->
+            <div style="margin-bottom: 20px;">
+                <label for="observacao-pedido" style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--texto-mutado); font-weight: bold;">
+                    📝 Nomes para personalizados ou observações:
+                </label>
+                <textarea id="observacao-pedido" placeholder="Ex: No terço ID 3, quero o nome 'Maria'. Tirar dúvidas sobre o frete..." style="width: 100%; height: 80px; padding: 10px; border-radius: 8px; border: 1px solid #374151; background-color: #272a3d; color: white; resize: none; font-size: 14px; outline: none;"></textarea>
+            </div>
+
+            <!-- Bloco de Preço Total unificado -->
+            <div class="total-carrinho" style="margin-bottom: 15px;">
+                <h3>Total: R$ <span id="valor-total-carrinho">0,00</span></h3>
+            </div>
+
+            <!-- Botão de Finalizar unificado -->
+            <button class="btn-finalizar" onclick="finalizarPedidoWhatsApp()">Finalizar Pedido via WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Ajustado para o nome correto do seu arquivo JavaScript -->
+    <script src="scrpt.js"></script>
+</body>
+
+</html>
